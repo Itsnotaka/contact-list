@@ -393,7 +393,7 @@ void contactList::printList() {
 	//check if the list is empty
 	while (temp != nullptr) {
 		//if it's not empty, print out the contact info
-		cout << "Here is the list of contacts saved!" << endl;
+		cout << "==============================" << endl;
 		cout << "Person " << i << endl;
 		cout << "First Name: " << temp->getFirstName() << endl;
 		cout << "Last Name: " << temp->getLastName() << endl;

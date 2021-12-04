@@ -5,33 +5,6 @@
 using namespace std;
 
 /**
- * Menu function
- * Prints the menu
- * @author Min Chun Fu
- * @version 1.0
- */
-int promptMenu() {
-	int choice;
-
-	cout << "1. Add a new contact" << endl;
-	cout << "2. Delete a contact" << endl;
-	cout << "3. Update contact info" << endl;
-	cout << "4. Display contacts in ascending order by last name" << endl;
-	cout << "5. Find the contact info for a particular person" << endl;
-	cout << "6. Exit" << endl;
-	cout << "===========================================================" << endl;
-	cout << "Enter your choice" << endl;
-	cout << "> ";
-
-	cin >> choice;
-	if (choice < 1 || choice > 7) {
-		cout << "Invalid choice" << endl;
-		return -1;
-	}
-	return choice;
-}
-
-/**
  * Developer function
  * Used to test in a preset environment with a couple of preset values to ensure every single function is working
  * @author Min Chun Fu
@@ -54,27 +27,32 @@ void devTest() {
 	cout << "Test addContact() successful" << endl;
 	devList.printList();
 	cout << "Test printList() successful" << endl;
-
+	exit(0);
 }
 
 /**
- * Main function
- * @author Min CHun Fu
+ * Menu function
+ * Prints the menu
+ * @author Min Chun Fu
  * @version 1.0
  */
-int main() {
+int promptMenu() {
 	contactList mainList;
 	string firstName, lastName, phoneNumber;
 	int menuChoice, choice;
 	char confirm;
-	cout << "Welcome to the contact manager!" << endl;
-	cout << "Please choose which function you would like to execute by entering the corresponding number" << endl;
+	cout << "1. Add a new contact" << endl;
+	cout << "2. Delete a contact" << endl;
+	cout << "3. Update contact info" << endl;
+	cout << "4. Display contacts in ascending order by last name" << endl;
+	cout << "5. Find the contact info for a particular person" << endl;
+	cout << "6. Exit" << endl;
 	cout << "===========================================================" << endl;
-
+	cout << "Enter your choice" << endl;
+	cout << "> ";
+	cin >> menuChoice;
 	do {
-		//think about a way to prevent data from refreshing EDIT: done wooohoo
-		//I tried using switch case but that doesn't work that great. Sorry for this ugly cout code.
-		if (promptMenu() == 1) {
+		if (menuChoice == 1) {
 			cout << "You have chosen to add a new contact" << endl;
 			cout << "Please enter the following information" << endl;
 			cout << "What is the contact's first name? (i.g john)" << endl;
@@ -118,7 +96,8 @@ int main() {
 					cout << "That's not a valid answer!" << endl;
 				}
 			} while (confirm != 'y' && confirm != 'n');
-		} else if (promptMenu() == 2) {
+			promptMenu();
+		} else if (menuChoice == 2) {
 			cout << "You have chosen to delete for a contact" << endl;
 			cout << "Please enter the contact's phone number" << endl;
 			cout << "> ";
@@ -136,7 +115,8 @@ int main() {
 			} else {
 				cout << "Sorry, we couldn't find the contact with the phone number " << phoneNumber << endl;
 			}
-		} else if (promptMenu() == 3) {
+			promptMenu();
+		} else if (menuChoice == 3) {
 			cout << "You have chosen to update a contact" << endl;
 			cout << "Please enter the contact's phone number" << endl;
 			cout << "> ";
@@ -220,10 +200,10 @@ int main() {
 					}
 				} while (choice != 1 && choice != 2 && choice != 3);
 			}
-		} else if (promptMenu() == 4) {
+		} else if (menuChoice == 4) {
 			cout << "Loading contact list..." << endl;
 			mainList.printList();
-		} else if (promptMenu() == 5) {
+		} else if (menuChoice == 5) {
 			do {
 				cout << "Sure! Do you have the phone number of the contact? (y/n)" << endl;
 				cout << "> ";
@@ -241,15 +221,39 @@ int main() {
 					mainList.searchForContactByName(searchKeyword);
 				}
 			} while (confirm != 'y' && confirm != 'n');
-		} else if (promptMenu() == 6) {
+		} else if (menuChoice == 6) {
 			cout << "Thank you for using this program!" << endl;
 			exit(0);
-		} else if (promptMenu() == 7) {
+		} else if (menuChoice == 7) {
 			devTest();
 		} else {
 			cout << "That's not a valid choice!" << endl;
+
+			cout << "Would you like to use another function? (y/n)" << endl;
+			cout << "> ";
+			cin >> confirm;
+			if (confirm == 'y') {
+				promptMenu();
+			} else if (confirm == 'n') {
+				cout << "Hope to see you next time!";
+				exit(0);
+			}
 		}
-	} while (promptMenu() != 6);
+	} while (confirm != 'y' && confirm != 'n');
+
+
+}
+
+/**
+ * Main function
+ * @author Min CHun Fu
+ * @version 1.0
+ */
+int main() {
+	cout << "Welcome to the contact manager!" << endl;
+	cout << "Please choose which function you would like to execute by entering the corresponding number" << endl;
+	cout << "===========================================================" << endl;
+	promptMenu();
 	return 0;
 }
 
