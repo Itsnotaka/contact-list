@@ -1,22 +1,13 @@
 #include <iostream>
 #include <string>
-#include <regex>
 #include "contactClass.h"
 
 using namespace std;
 
 /**
- * For project 4 you are asked to create and maintain contact information (name and phone number). Your program must include the following functionality:
- * 1) add a new contact
- * 2) delete a contact
- * 3) update contact info
- * 4) display contacts in ascending order by last name
- * 5) find the contact info for a particular person
- */
-
-/**
+ * Menu function
  * Prints the menu
- * @author Min CHun Fu
+ * @author Min Chun Fu
  * @version 1.0
  */
 int promptMenu() {
@@ -28,16 +19,39 @@ int promptMenu() {
 	cout << "4. Display contacts in ascending order by last name" << endl;
 	cout << "5. Find the contact info for a particular person" << endl;
 	cout << "6. Exit" << endl;
+	cout << "7. dev test" << endl;
 	cout << "===========================================================" << endl;
 	cout << "Enter your choice" << endl;
 	cout << " > ";
 
 	cin >> choice;
-	if (choice < 1 || choice > 6) {
+	if (choice < 1 || choice > 8) {
 		cout << "Invalid choice" << endl;
 		return -1;
 	}
 	return choice;
+}
+
+/**
+ * Developer function
+ * Used to test in a preset environment with a couple of preset values to ensure every single function is working
+ * @author Min Chun Fu
+ * @version 1.0
+ */
+void devTest() {
+	contactList devList;
+	string devFirstName, devLastName, devPhoneNumber;
+	//precreate 4 unique contactNode
+	contactNode devContact1("Gwen", "Elliott", "520-549-6686");
+	contactNode devContact2("Ann", "Willis", "908-645-2304");
+	contactNode devContact3("Barry", "Chavez", "310-743-8391");
+	contactNode devContact4("Yvette", "Francis", "410-248-9506");
+	//Test basic functions
+	devList.addContact(devContact1);
+	devList.addContact(devContact2);
+	devList.addContact(devContact3);
+	devList.addContact(devContact4);
+	devList.printList();
 }
 
 /**
@@ -46,7 +60,7 @@ int promptMenu() {
  * @version 1.0
  */
 int main() {
-	contactList newList;
+	contactList mainList;
 	string firstName, lastName, phoneNumber;
 	int choice;
 	char confirm;
@@ -67,7 +81,7 @@ int main() {
 			cout << "What is the contact's last name (i.g Doe)?" << endl;
 			cout << "> ";
 			cin >> lastName;
-			cout << "What is the contact's phone number? (i.g 9999999999)" << endl;
+			cout << "What is the contact's phone number? (i.g 012-345-6789)" << endl;
 			cout << "> ";
 			cin >> phoneNumber;
 			//validate it using regex
@@ -93,8 +107,8 @@ int main() {
 				cout << "> ";
 				cin >> confirm;
 				if (confirm == 'y') {
-					newList.addContact(newContact);
-					cout << "OK! Contact added successfully. There is " << newList.getListSize()
+					mainList.addContact(newContact);
+					cout << "OK! Contact added successfully. There is " << mainList.getListSize()
 						 << " contact(s) in the list." << endl;
 				} else if (confirm == 'n') {
 					cout << "Sure! The info was not saved" << endl;
@@ -107,15 +121,15 @@ int main() {
 			cout << "Please enter the contact's phone number" << endl;
 			cout << "> ";
 			cin >> phoneNumber;
-			if (newList.isContactInList(phoneNumber)) {
+			if (mainList.isContactInList(phoneNumber)) {
 				cout << "Contact found!" << endl;
-				newList.searchForContact(phoneNumber);
+				mainList.searchForContact(phoneNumber);
 				do {
 					cout << "Are you sure you want to delete this contact? (y/n)" << endl;
 					cin >> confirm;
 				} while (confirm != 'y' && confirm != 'n');
-				newList.removeContact(phoneNumber);
-				cout << "OK! Contact deleted successfully. There is " << newList.getListSize()
+				mainList.removeContact(phoneNumber);
+				cout << "OK! Contact deleted successfully. There is " << mainList.getListSize()
 					 << " contact(s) in the list." << endl;
 			} else {
 				cout << "Sorry, we couldn't find the contact with the phone number " << phoneNumber << endl;
@@ -125,7 +139,7 @@ int main() {
 			cout << "Please enter the contact's phone number" << endl;
 			cout << "> ";
 			cin >> phoneNumber;
-			if (newList.isContactInList(phoneNumber)) {
+			if (mainList.isContactInList(phoneNumber)) {
 				cout << "Contact found! Which of the following would you like to update?" << endl;
 				cout << "===========================================================" << endl;
 				cout << "1. First name" << endl;
@@ -135,7 +149,7 @@ int main() {
 					cin >> choice;
 					if (choice == 1) {
 						do {
-							string previousFirstName = newList.getFirstName(phoneNumber);
+							string previousFirstName = mainList.getFirstName(phoneNumber);
 							cout << "What first name would you like to change to" << endl;
 							cout << "> ";
 							cin >> firstName;
@@ -146,7 +160,7 @@ int main() {
 							cout << "> ";
 							cin >> confirm;
 							if (confirm == 'y') {
-								newList.updateContact(phoneNumber, choice, firstName);
+								mainList.updateContact(phoneNumber, choice, firstName);
 								cout << "OK! Contact updated successfully. The contacts first name is now << "
 									 << firstName << endl;
 							} else if (confirm == 'n') {
@@ -157,7 +171,7 @@ int main() {
 						} while (confirm != 'y' && confirm != 'n');
 					} else if (choice == 2) {
 						do {
-							string previousLastName = newList.getLastName(phoneNumber);
+							string previousLastName = mainList.getLastName(phoneNumber);
 							cout << "What last name would you like to change to?" << endl;
 							cout << "> ";
 							cin >> lastName;
@@ -168,7 +182,7 @@ int main() {
 							cout << "> ";
 							cin >> confirm;
 							if (confirm == 'y') {
-								newList.updateContact(phoneNumber, choice, lastName);
+								mainList.updateContact(phoneNumber, choice, lastName);
 								cout << "OK! Contact updated successfully. The contacts last name is now << "
 									 << lastName << endl;
 							} else if (confirm == 'n') {
@@ -179,7 +193,7 @@ int main() {
 						} while (confirm != 'y' && confirm != 'n');
 					} else if (choice == 3) {
 						do {
-							string previousPhoneNumber = newList.getPhoneNumber(phoneNumber);
+							string previousPhoneNumber = mainList.getPhoneNumber(phoneNumber);
 							cout << "What phone number would you like to change to?" << endl;
 							cout << "> ";
 							cin >> phoneNumber;
@@ -190,7 +204,7 @@ int main() {
 							cout << "> ";
 							cin >> confirm;
 							if (confirm == 'y') {
-								newList.updateContact(phoneNumber, choice, phoneNumber);
+								mainList.updateContact(phoneNumber, choice, phoneNumber);
 								cout << "OK! Contact updated successfully. The contacts phone number is now << "
 									 << phoneNumber << endl;
 							} else if (confirm == 'n') {
@@ -203,31 +217,33 @@ int main() {
 						cout << "That's not a valid choice!" << endl;
 					}
 				} while (choice != 1 && choice != 2 && choice != 3);
-			};
+			}
 		} else if (promptMenu() == 4) {
 			cout << "Here is the list of contacts saved!" << endl;
-			newList.printList();
+			mainList.printList();
 		} else if (promptMenu() == 5) {
 			do {
 				cout << "Sure! Do you have the phone number of the contact? (y/n)" << endl;
 				cout << "> ";
 				cin >> confirm;
-				if(confirm == 'y'){
+				if (confirm == 'y') {
 					cout << "Great! Whats the phone number of the contact you are looking for?" << endl;
 					cout << "> ";
 					cin >> phoneNumber;
-					newList.searchForContact(phoneNumber);
-				} else if (confirm == 'n'){
+					mainList.searchForContact(phoneNumber);
+				} else if (confirm == 'n') {
 					cout << "No worries! Please enter the name of the contact (first name/ last name)" << endl;
 					cout << "> ";
 					string searchKeyword;
 					cin >> searchKeyword;
-					newList.searchForContactByName(searchKeyword);
+					mainList.searchForContactByName(searchKeyword);
 				}
-			} while(confirm != 'y' && confirm != 'n');
+			} while (confirm != 'y' && confirm != 'n');
 		} else if (promptMenu() == 6) {
 			cout << "Thank you for using the contact manager!" << endl;
 			//exit the program
+		} else if (promptMenu() == 7) {
+			devTest();
 		}
 		cout << "If you wish to exit now, type 'exit', or enter any key to continue. " << endl;
 		cout << "> ";
@@ -235,3 +251,5 @@ int main() {
 	} while (exit != "exit" || exit != "Exit" || promptMenu() != 6);
 	return 0;
 }
+
+

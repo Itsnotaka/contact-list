@@ -5,10 +5,17 @@
 
 using namespace std;
 
+/**
+ * Implementation of the contact class
+ * @author Min Chun Fu
+ * @version 1.0
+ */
+
+
 /** Create an instance of the contact class
 *
-* Containing the name, phone number, and email address
 * @version 1.0
+ *
 * We are assuming that the email address is unique, so we used it as a key
 *
 * @param firstName The name of the contact
@@ -22,67 +29,76 @@ using namespace std;
 * @object createdAt shows the local date and time when the contact was created.
 * @object the pointer to the next contact in the list.
 */
-contactNode::contactNode(string firstName, string lastName, string phoneNumber) {
-	// current date/time based on current system
-	time_t created = time(0);
+contactNode::contactNode(string firstName, string lastName, const string &phoneNumber) {
+
 	contact_id = setId(phoneNumber);
 	first_name = firstName;
 	last_name = lastName;
 	phone_number = phoneNumber;
 	// convert time to string form
+	// current date/time based on current system
+	time_t created = time(nullptr);
 	createdAt = ctime(&created);
 
 	next = nullptr;
-};
-
+}
+/**
+ * Preset contact class with default values
+ */
 contactNode::contactNode() {
-	time_t created = time(0);
+	time_t created = time(nullptr);
 	contact_id = setId("example@gmail.com");
 	first_name = "example";
 	last_name = "example";
 	phone_number = "999-999-9999";
 	createdAt = ctime(&created);
 	next = nullptr;
-};
+}
 
 /**
+ * Gets the contact id
  * @return the contact_id of the contact
  */
 int contactNode::get_id() const {
 	return contact_id;
-};
+}
 
 /**
+ * Gets the first name of the contact
  * @return the first name of the contact
  */
 string contactNode::getFirstName() {
 	return first_name;
-};
+}
 
 /**
+ * Gets the last name of the contact
  * @return the last name of the contact
  */
 string contactNode::getLastName() {
 	return last_name;
-};
+}
 
 /**
+ * Gets the phone number of the contact
  * @return the phone number of the contact
  */
 string contactNode::getPhoneNumber() {
 	return phone_number;
-};
+}
 
 /**
  * Generates a random id for the contact
- *  @version 1.0
+ *
+ *  @version 1.0 -
  *  I made it that it randomly generates from  1 to 10000;
- *  @version 1.1
+ *  @version 1.1 -
  *  I am going to change it to be more random by hashing the first name and last name
- *  @version 1.2
+ *  @version 1.2 -
  *  I am going to change it to be more random by hashing the email address
- *  @version 1.3
+ *  @version 1.3 -
  *  I am going to change it to be more random by hashing the phone number since phone number is unique
+ *
  *  @param first_name the first name of the contact
  *  @param last_name the last name of the contact
  *  @return
@@ -92,54 +108,59 @@ int contactNode::setId(const string &phoneNumber) {
 	contact_id = hash<string>{}(phoneNumber);
 
 	return contact_id;
-};
+}
 
 /**
+ * Sets the first name of the contact
  * @param firstName
  * @return updated firstName
  */
 void contactNode::setFirstName(string firstName) {
 	first_name = firstName;
-};
+}
 
 /**
+ * Sets the last name of the contact
  * @param lastName
  * @return updated lastName
  */
 void contactNode::setLastName(string lastName) {
 	last_name = lastName;
-};
+}
 
 /**
+ * Sets the phone number of the contact
  * @param phoneNumber
  * @return updated phoneNumber
  */
 void contactNode::setPhoneNumber(string phoneNumber) {
 	phone_number = phoneNumber;
-};
+}
 
 /**
  * Delete the contact
  */
 contactNode::~contactNode() {
 	delete next;
-};
+}
 
 /**
+ * Gets the next contact in the list
  * @return the next contact
  */
 contactNode *contactNode::getNext() {
 	return next;
-};
+}
 
 /**
+ * Sets the next contact in the list
  * @param nextContact
  * @return the updated nextContact
  */
 contactNode *contactNode::setNext(contactNode *nextNode) {
 	next = nextNode;
 	return next;
-};
+}
 
 /**
  * Creates a new empty contact list
@@ -148,7 +169,7 @@ contactList::contactList() {
 	head = nullptr;
 	tail = nullptr;
 	listSize = 0;
-};
+}
 
 /**
  * Deletes the contact list
@@ -161,13 +182,12 @@ contactList::~contactList() {
 		delete temp;
 		temp = head;
 	}
-};
+}
 
 
 /**
  * Adds a new contact to the list
  * @param newContact
- * contact should always have value
  *
  * the function itself checks if the email address hash is the same with the ones in the database,
  * simply have to check if the list is empty,
@@ -177,6 +197,7 @@ contactList::~contactList() {
  */
 void contactList::addContact(contactNode newContact) {
 	//create a temporary node
+	//Could change to auto temp = new contactNode(...);
 	contactNode *temp = new contactNode(newContact.getFirstName(), newContact.getLastName(),
 										newContact.getPhoneNumber());
 	//reduce time by checking if the contact is already in the list
@@ -193,7 +214,7 @@ void contactList::addContact(contactNode newContact) {
 		tail = temp;
 	}
 	listSize++;
-};
+}
 
 /**
  * Removes a contact from the list
@@ -237,7 +258,7 @@ void contactList::removeContact(const string &phoneNumber) {
 		prev = temp;
 		temp = temp->getNext();
 	}
-};
+}
 
 /**
  * A crucial function that checks if the contact is in the list.
@@ -254,7 +275,7 @@ bool contactList::isContactInList(const string &phoneNumber) {
 		temp = temp->getNext();
 	}
 	return false;
-};
+}
 
 /**
  * Similar function to isContactInList that checks if the contact is in the list.
@@ -275,14 +296,14 @@ void contactList::searchForContact(const string &phoneNumber) {
 		temp = temp->getNext();
 	}
 	cout << "Contact not found" << endl;
-};
+}
 
 /**
  * Similar function to searchForContact that checks if the contact is in the list by using entered name.
  * This will only return the first contact that matches the name.
  * @param searchName
  */
-void contactList::searchForContactByName(const string &searchName){
+void contactList::searchForContactByName(const string &searchName) {
 	//create a temporary node
 	contactNode *temp = head;
 	//check if the list is empty
@@ -301,7 +322,7 @@ void contactList::searchForContactByName(const string &searchName){
 		temp = temp->getNext();
 	}
 	cout << "Contact not found" << endl;
-};
+}
 
 /**
  * Use the phone number to find the contact and replace the value in the contactField with updated value
@@ -309,7 +330,7 @@ void contactList::searchForContactByName(const string &searchName){
  * @param contactField the field that needs to be updated
  * @param updatedValue the new value of the field
  */
-void contactList::updateContact(const string &phoneNumber, int contactField, string updatedValue) {
+void contactList::updateContact(const string &phoneNumber, int contactField, const string &updatedValue) {
 	//create a temporary node
 	contactNode *temp = head;
 	//check if the list is empty
@@ -357,7 +378,7 @@ void contactList::sortContactList() {
 	}
 	//sort the list
 	contactNode *prev = nullptr;
-	contactNode *next = nullptr;
+	contactNode *next;
 	while (temp != nullptr) {
 		next = temp->getNext();
 		while (next != nullptr) {
@@ -406,7 +427,7 @@ void contactList::printList() {
 		i++;
 		//after printing one info, set the temporary node to the next node
 		temp = temp->getNext();
-	};
+	}
 }
 
 /**

@@ -28,7 +28,7 @@ private:
 
 public:
     contactNode();
-    contactNode(string firstName, string lastName, string phoneNumber);
+    contactNode(string firstName, string lastName, const string& phoneNumber);
     ~contactNode();
 
     int get_id() const;
@@ -79,7 +79,7 @@ public:
     void printContact(contactNode *contact);
 	void searchForContact(const string& phoneNumber);
 	void searchForContactByName(const string &searchName);
-	void updateContact(const string& phoneNumber, int contactField, string updatedValue);
+	void updateContact(const string& phoneNumber, int contactField, const string& updatedValue);
 
 
 };
