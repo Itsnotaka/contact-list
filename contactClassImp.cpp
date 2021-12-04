@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include <ctime>
 #include "contactClass.h"
 
@@ -42,6 +43,7 @@ contactNode::contactNode(string firstName, string lastName, const string &phoneN
 
 	next = nullptr;
 }
+
 /**
  * Preset contact class with default values
  */
@@ -145,7 +147,6 @@ contactNode::~contactNode() {
 }
 
 /**
- * Gets the next contact in the list
  * @return the next contact
  */
 contactNode *contactNode::getNext() {
@@ -153,7 +154,6 @@ contactNode *contactNode::getNext() {
 }
 
 /**
- * Sets the next contact in the list
  * @param nextContact
  * @return the updated nextContact
  */
@@ -170,6 +170,7 @@ contactList::contactList() {
 	tail = nullptr;
 	listSize = 0;
 }
+
 
 /**
  * Deletes the contact list
@@ -188,6 +189,7 @@ contactList::~contactList() {
 /**
  * Adds a new contact to the list
  * @param newContact
+ * contact should always have value
  *
  * the function itself checks if the email address hash is the same with the ones in the database,
  * simply have to check if the list is empty,
@@ -360,59 +362,30 @@ void contactList::updateContact(const string &phoneNumber, int contactField, con
 	cout << "Contact not found" << endl;
 }
 
-
 /**
- * Prints the contact list in ascending order by last name
+ * Sorts the contact list in ascending order by last name
  */
-void contactList::sortContactList() {
+void contactList::printSortedList() {
+	//initialize a vecotr for the last name of the contact
+	vector<string> lastNameVector;
 	//create a temporary node
 	contactNode *temp = head;
 	//check if the list is empty
-	if (head == nullptr) {
-		cout << "The list is empty" << endl;
-		return;
-	}
-	//check if the list has only one node
-	if (head->getNext() == nullptr) {
-		printContact(head);
-	}
-	//sort the list
-	contactNode *prev = nullptr;
-	contactNode *next;
 	while (temp != nullptr) {
-		next = temp->getNext();
-		while (next != nullptr) {
-			if (temp->getLastName() > next->getLastName()) {
-				//swap the nodes
-				temp->setNext(next->getNext());
-				next->setNext(temp);
-				if (prev == nullptr) {
-					head = next;
-				} else {
-					prev->setNext(next);
-				}
-				temp = next;
-				next = temp->getNext();
-			} else {
-				prev = temp;
-				temp = next;
-				next = temp->getNext();
-			}
-		}
-	}
-	//print the list after sorted by assigning the head to the temp node
-	temp = head;
-	while (temp != nullptr) {
-		printContact(temp);
+		//if it's not empty, add the last name to the vector
+		lastNameVector.push_back(temp->getLastName());
+		//go to the next node
 		temp = temp->getNext();
 	}
+	//sort the vector
+	sort(lastNameVector.begin(), lastNameVector.end());
+//create a temporary node
 }
 
 /**
  * Prints out the whole list containing every contact info
  */
 void contactList::printList() {
-	sortContactList();
 	//create a temporary node
 	contactNode *temp = head;
 	//int i means the person's position in the list, so we start from 1
@@ -420,6 +393,7 @@ void contactList::printList() {
 	//check if the list is empty
 	while (temp != nullptr) {
 		//if it's not empty, print out the contact info
+		cout << "Here is the list of contacts saved!" << endl;
 		cout << "Person " << i << endl;
 		cout << "First Name: " << temp->getFirstName() << endl;
 		cout << "Last Name: " << temp->getLastName() << endl;
@@ -427,6 +401,10 @@ void contactList::printList() {
 		i++;
 		//after printing one info, set the temporary node to the next node
 		temp = temp->getNext();
+	}
+	//if the list is empty, print out the message
+	if (head == nullptr) {
+		cout << "The list is empty" << endl;
 	}
 }
 

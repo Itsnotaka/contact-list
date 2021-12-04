@@ -19,13 +19,12 @@ int promptMenu() {
 	cout << "4. Display contacts in ascending order by last name" << endl;
 	cout << "5. Find the contact info for a particular person" << endl;
 	cout << "6. Exit" << endl;
-	cout << "7. dev test" << endl;
 	cout << "===========================================================" << endl;
 	cout << "Enter your choice" << endl;
-	cout << " > ";
+	cout << "> ";
 
 	cin >> choice;
-	if (choice < 1 || choice > 8) {
+	if (choice < 1 || choice > 7) {
 		cout << "Invalid choice" << endl;
 		return -1;
 	}
@@ -42,6 +41,7 @@ void devTest() {
 	contactList devList;
 	string devFirstName, devLastName, devPhoneNumber;
 	//precreate 4 unique contactNode
+	cout << "Pre-creating 4 unique contactNode" << endl;
 	contactNode devContact1("Gwen", "Elliott", "520-549-6686");
 	contactNode devContact2("Ann", "Willis", "908-645-2304");
 	contactNode devContact3("Barry", "Chavez", "310-743-8391");
@@ -51,7 +51,10 @@ void devTest() {
 	devList.addContact(devContact2);
 	devList.addContact(devContact3);
 	devList.addContact(devContact4);
+	cout << "Test addContact() successful" << endl;
 	devList.printList();
+	cout << "Test printList() successful" << endl;
+
 }
 
 /**
@@ -62,14 +65,13 @@ void devTest() {
 int main() {
 	contactList mainList;
 	string firstName, lastName, phoneNumber;
-	int choice;
+	int menuChoice, choice;
 	char confirm;
 	cout << "Welcome to the contact manager!" << endl;
-	cout << "please choose which function you would like to execute by entering the corresponding number" << endl;
+	cout << "Please choose which function you would like to execute by entering the corresponding number" << endl;
 	cout << "===========================================================" << endl;
-	string exit;
-	do {
 
+	do {
 		//think about a way to prevent data from refreshing EDIT: done wooohoo
 		//I tried using switch case but that doesn't work that great. Sorry for this ugly cout code.
 		if (promptMenu() == 1) {
@@ -219,7 +221,7 @@ int main() {
 				} while (choice != 1 && choice != 2 && choice != 3);
 			}
 		} else if (promptMenu() == 4) {
-			cout << "Here is the list of contacts saved!" << endl;
+			cout << "Loading contact list..." << endl;
 			mainList.printList();
 		} else if (promptMenu() == 5) {
 			do {
@@ -240,15 +242,14 @@ int main() {
 				}
 			} while (confirm != 'y' && confirm != 'n');
 		} else if (promptMenu() == 6) {
-			cout << "Thank you for using the contact manager!" << endl;
-			//exit the program
+			cout << "Thank you for using this program!" << endl;
+			exit(0);
 		} else if (promptMenu() == 7) {
 			devTest();
+		} else {
+			cout << "That's not a valid choice!" << endl;
 		}
-		cout << "If you wish to exit now, type 'exit', or enter any key to continue. " << endl;
-		cout << "> ";
-		cin >> exit;
-	} while (exit != "exit" || exit != "Exit" || promptMenu() != 6);
+	} while (promptMenu() != 6);
 	return 0;
 }
 
