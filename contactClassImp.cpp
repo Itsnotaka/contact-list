@@ -30,8 +30,7 @@ using namespace std;
 * @object createdAt shows the local date and time when the contact was created.
 * @object the pointer to the next contact in the list.
 */
-contactNode::contactNode(string firstName, string lastName, const string &phoneNumber) {
-
+contactNode::contactNode(string firstName, string lastName, const string& phoneNumber){
 	contact_id = setId(phoneNumber);
 	first_name = firstName;
 	last_name = lastName;
@@ -48,12 +47,15 @@ contactNode::contactNode(string firstName, string lastName, const string &phoneN
  * Preset contact class with default values
  */
 contactNode::contactNode() {
-	time_t created = time(nullptr);
-	contact_id = setId("example@gmail.com");
-	first_name = "example";
-	last_name = "example";
+	contact_id = 0;
+	first_name = "John";
+	last_name = "Doe";
 	phone_number = "999-999-9999";
+	// convert time to string form
+	// current date/time based on current system
+	time_t created = time(nullptr);
 	createdAt = ctime(&created);
+
 	next = nullptr;
 }
 
@@ -71,7 +73,7 @@ int contactNode::get_id() const {
  */
 string contactNode::getFirstName() {
 	return first_name;
-}
+	}
 
 /**
  * Gets the last name of the contact
@@ -105,7 +107,7 @@ string contactNode::getPhoneNumber() {
  *  @param last_name the last name of the contact
  *  @return
  */
-int contactNode::setId(const string &phoneNumber) {
+int contactNode::setId(const string& phoneNumber) {
 	//contact_id = rand() % 10000;
 	contact_id = hash<string>{}(phoneNumber);
 
@@ -200,8 +202,7 @@ contactList::~contactList() {
 void contactList::addContact(contactNode newContact) {
 	//create a temporary node
 	//Could change to auto temp = new contactNode(...);
-	contactNode *temp = new contactNode(newContact.getFirstName(), newContact.getLastName(),
-										newContact.getPhoneNumber());
+	contactNode *temp = new contactNode(newContact.getFirstName(), newContact.getLastName(), newContact.getPhoneNumber());
 	//reduce time by checking if the contact is already in the list
 	if (isContactInList(temp->getPhoneNumber())) {
 		cout << "Contact already exists" << endl;
@@ -222,7 +223,7 @@ void contactList::addContact(contactNode newContact) {
  * Removes a contact from the list
  * @param phoneNumber
  */
-void contactList::removeContact(const string &phoneNumber) {
+void contactList::removeContact(const string& phoneNumber) {
 	//create a temporary node
 	contactNode *temp = head;
 	contactNode *prev = nullptr;
@@ -268,7 +269,7 @@ void contactList::removeContact(const string &phoneNumber) {
  * @param phoneNumber
  * @return true if the contact is in the list, false otherwise
  */
-bool contactList::isContactInList(const string &phoneNumber) {
+bool contactList::isContactInList(const string& phoneNumber) {
 	contactNode *temp = head;
 	while (temp != nullptr) {
 		if (temp->getPhoneNumber() == phoneNumber) {
@@ -283,7 +284,7 @@ bool contactList::isContactInList(const string &phoneNumber) {
  * Similar function to isContactInList that checks if the contact is in the list.
  * @param phoneNumber
  */
-void contactList::searchForContact(const string &phoneNumber) {
+void contactList::searchForContact(const string& phoneNumber) {
 	//create a temporary node
 	contactNode *temp = head;
 	//check if the list is empty
@@ -332,7 +333,7 @@ void contactList::searchForContactByName(const string &searchName) {
  * @param contactField the field that needs to be updated
  * @param updatedValue the new value of the field
  */
-void contactList::updateContact(const string &phoneNumber, int contactField, const string &updatedValue) {
+void contactList::updateContact(const string& phoneNumber, int contactField, const string &updatedValue) {
 	//create a temporary node
 	contactNode *temp = head;
 	//check if the list is empty
@@ -366,20 +367,26 @@ void contactList::updateContact(const string &phoneNumber, int contactField, con
  * Sorts the contact list in ascending order by last name
  */
 void contactList::printSortedList() {
-	//initialize a vecotr for the last name of the contact
+	//initialize a vector for the last name of the contact
 	vector<string> lastNameVector;
-	//create a temporary node
+	//Add every last name in the node to the vector
 	contactNode *temp = head;
-	//check if the list is empty
 	while (temp != nullptr) {
-		//if it's not empty, add the last name to the vector
 		lastNameVector.push_back(temp->getLastName());
-		//go to the next node
 		temp = temp->getNext();
 	}
 	//sort the vector
 	sort(lastNameVector.begin(), lastNameVector.end());
-//create a temporary node
+	//move the node by the order of the vector
+	temp = head;
+	while (temp != nullptr) {
+		//if the last name of the node matches the last name of the vector, print the contact
+		if (temp->getLastName() == lastNameVector[0]) {
+			printContact(temp);
+			lastNameVector.erase(lastNameVector.begin());
+		}
+		temp = temp->getNext();
+	}
 }
 
 /**
@@ -432,20 +439,21 @@ int contactList::getListSize() const {
  * @param phoneNumber
  * @return
  */
-string contactList::getFirstName(const string &phoneNumber) {
-	//back up safety in case the contact isn't in the list, and I forgot to check before calling this function
-	if (isContactInList(phoneNumber)) {
-		contactNode *temp = head;
-		while (temp != nullptr) {
-			if (temp->getPhoneNumber() == phoneNumber) {
-				return temp->getFirstName();
-			}
-			temp = temp->getNext();
+string contactList::getFirstName(const string& phoneNumber) {
+	//create a temporary node
+	contactNode *temp = head;
+	//check if the list is empty
+	while (temp != nullptr) {
+		//if it's not empty, check if the phone number matches
+		if (temp->getPhoneNumber() == phoneNumber) {
+			//if it does, return the first name
+			return temp->getFirstName();
 		}
-		return "";
-	} else {
-		return "Error: Contact not found";
+		//if contact_id doesn't match, go to the next node
+		temp = temp->getNext();
 	}
+	//if the list is empty, return an empty string
+	return "";
 }
 
 /**
@@ -453,7 +461,7 @@ string contactList::getFirstName(const string &phoneNumber) {
  * @param phoneNumber
  * @return
  */
-string contactList::getLastName(const string &phoneNumber) {
+string contactList::getLastName(const string& phoneNumber) {
 	//back up safety in case the contact isn't in the list, and I forgot to check before calling this function
 	if (isContactInList(phoneNumber)) {
 		contactNode *temp = head;
@@ -474,7 +482,7 @@ string contactList::getLastName(const string &phoneNumber) {
  * @param phoneNumber
  * @return
  */
-string contactList::getPhoneNumber(const string &phoneNumber) {
+string contactList::getPhoneNumber(const string& phoneNumber) {
 	//back up safety in case the contact isn't in the list, and I forgot to check before calling this function
 	if (isContactInList(phoneNumber)) {
 		contactNode *temp = head;

@@ -22,7 +22,7 @@ private:
     string first_name;
     string last_name;
     string phone_number;
-    char* createdAt;
+    char* createdAt{};
 
     contactNode *next;
 
@@ -80,6 +80,7 @@ public:
 	void searchForContact(const string& phoneNumber);
 	void searchForContactByName(const string &searchName);
 	void updateContact(const string& phoneNumber, int contactField, const string& updatedValue);
+
 
 
 };
