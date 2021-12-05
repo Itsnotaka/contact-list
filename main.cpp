@@ -6,17 +6,20 @@ int main(){
 	//create a contact list
 	contactList myList;
 	//create a contact object
-	contactNode contact("abc","fwf","12421515");
-	contactNode contact1("dword","ffmpeg","12421514");
-	contactNode contact2("added","aah","51151");
-	//add the contacts to the contact list
-	myList.addContact(contact);
-	cout << "added";
-	myList.addContact(contact1);
-//	myList.addContact(contact2);
-	//print contact list
-	//myList.printList();
-	//print sorted contact list
+	//add the contact to the list
+	auto *newContact = new contactNode("abc","fwf","12421515");
+	myList.addContact(newContact);
+	cout << "Wanna add?" << endl;
+	int answer;
+	cin >> answer;
+	if(answer == 1){
+		string firstName, lastName, phoneNumber;
+		cin >> firstName;
+		cin >> lastName;
+		cin >> phoneNumber;
+		auto *newContact1 = new contactNode(firstName, lastName, phoneNumber);
+		myList.addContact(newContact1);
+	}
 
 	return 0;
 }

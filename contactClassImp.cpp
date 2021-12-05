@@ -203,7 +203,7 @@ void contactList::addContact(contactNode contact) {
 		return;
 	}
 	//create a new node for the list
-	auto *newContact = new contactNode(contact);
+	auto *newContact = new contactNode(contact.getFirstName(), contact.getLastName(), contact.getPhoneNumber());
 	//check if the list is empty
 	if (head == nullptr) {
 		head = newContact;
