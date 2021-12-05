@@ -22,13 +22,13 @@ private:
     string first_name;
     string last_name;
     string phone_number;
-    char* createdAt{};
+    char* createdAt;
 
-    contactNode *next;
+	contactNode* next;
 
 public:
     contactNode();
-    contactNode(string firstName, string lastName, const string& phoneNumber);
+    contactNode(string first_name, string last_name, const string &phone_number);
     ~contactNode();
 
     int get_id() const;
@@ -58,7 +58,7 @@ class contactList
 private:
     contactNode *head;
     contactNode *tail;
-    int listSize;
+    int listSize = 0;
 
 public:
     contactList();
@@ -74,14 +74,11 @@ public:
 
 	void addContact(contactNode contact);
     void removeContact(const string& phoneNumber);
+	void print(contactNode *contact);
     void printList();
 	void printSortedList();
-    void printContact(contactNode *contact);
 	void searchForContact(const string& phoneNumber);
 	void searchForContactByName(const string &searchName);
 	void updateContact(const string& phoneNumber, int contactField, const string& updatedValue);
-
-
-
 };
 #endif /*CONTACT_CLASS_H*/

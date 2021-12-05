@@ -2,24 +2,23 @@
 #include <string>
 #include "contactClass.h"
 
-int main(){
-	//create a contact list
-	contactList myList;
-	//create a contact object
-	//add the contact to the list
-	auto *newContact = new contactNode("abc","fwf","12421515");
-	myList.addContact(newContact);
-	cout << "Wanna add?" << endl;
-	int answer;
-	cin >> answer;
-	if(answer == 1){
-		string firstName, lastName, phoneNumber;
-		cin >> firstName;
-		cin >> lastName;
-		cin >> phoneNumber;
-		auto *newContact1 = new contactNode(firstName, lastName, phoneNumber);
-		myList.addContact(newContact1);
-	}
 
+//TODO find a way to fix memory leak
+contactList myList;
+
+int main() {
+	char choice ;
+	contactNode contact("John", "Doe", "999999");
+	contactNode contact1("John", "Doe", "1241414");
+	myList.addContact(contact);
+	myList.addContact(contact1);
+	myList.printList();
+	cout << "Waiting..." << endl;
+	cin >> choice;
+	if (choice == 6){
+		myList.addContact(contact1);
+		myList.printList();
+
+	}
 	return 0;
 }

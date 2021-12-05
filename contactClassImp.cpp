@@ -12,7 +12,6 @@ using namespace std;
  * @version 1.0
  */
 
-
 /** Create an instance of the contact class
 *
 * @version 1.0
@@ -31,14 +30,16 @@ using namespace std;
 * @object createdAt shows the local date and time when the contact was created.
 * @object the pointer to the next contact in the list.
 */
+
 contactNode::contactNode(string firstName, string lastName, const string &phoneNumber) {
-	this->contact_id = setId(phoneNumber);
-	this->first_name = firstName;
-	this->last_name = lastName;
-	this->phone_number = phoneNumber;
+	contact_id = setId(phoneNumber);
+	first_name = firstName;
+	last_name = lastName;
+	phone_number = phoneNumber;
 	time_t created = time(nullptr);
-	this->createdAt = ctime(&created);
-	this->next = nullptr;
+	createdAt = ctime(&created);
+
+	next = nullptr;
 }
 
 
@@ -47,13 +48,13 @@ contactNode::contactNode(string firstName, string lastName, const string &phoneN
  * Preset contact class with default values
  */
 contactNode::contactNode() {
-	this->contact_id = setId("999-999-9999");
-	this->first_name = "John";
-	this->last_name = "Doe";
-	this->phone_number = "999-999-9999";
+	contact_id = setId("999-999-9999");
+	first_name = "John";
+	last_name = "Doe";
+	phone_number = "999-999-9999";
 	time_t created = time(nullptr);
-	this->createdAt = ctime(&created);
-	this->next = nullptr;
+	createdAt = ctime(&created);
+	next = nullptr;
 }
 
 /**
@@ -161,6 +162,7 @@ contactNode *contactNode::setNext(contactNode *nextNode) {
 	return next;
 }
 
+
 /**
  * Creates a new empty contact list
  */
@@ -197,21 +199,20 @@ contactList::~contactList() {
  * it then will add 1 to the size of the list.
  */
 void contactList::addContact(contactNode contact) {
-	//check if the number is added before
-	if(isContactInList(contact.getPhoneNumber())){
-		cout << "Contact already exists" << endl;
+	//check if the contact is already in the list
+	if(isContactInList(contact.getPhoneNumber())) {
+		cout << "Contact already in the list" << endl;
 		return;
 	}
-	//create a new node for the list
-	auto *newContact = new contactNode(contact.getFirstName(), contact.getLastName(), contact.getPhoneNumber());
 	//check if the list is empty
 	if (head == nullptr) {
-		head = newContact;
-		tail = newContact;
+		head = new contactNode(contact);
+		tail = head;
 	} else {
-		tail->setNext(newContact);
-		tail = newContact;
+		tail->setNext(new contactNode(contact));
+		tail = tail->getNext();
 	}
+	listSize++;
 }
 
 /**
@@ -287,7 +288,7 @@ void contactList::searchForContact(const string& phoneNumber) {
 		//if it's not empty, check if the contact id matches
 		if (temp->getPhoneNumber() == phoneNumber) {
 			//if it does, print the contact
-			printContact(temp);
+			print(temp);
 			return;
 		}
 		//if contact_id doesn't match, go to the next node
@@ -309,11 +310,11 @@ void contactList::searchForContactByName(const string &searchName) {
 		//if it's not empty, check if the contact name matches
 		if (temp->getFirstName() == searchName) {
 			//if it does, print the contact
-			printContact(temp);
+			print(temp);
 			return;
 		} else if (temp->getLastName() == searchName) {
 			//if it does, print the contact
-			printContact(temp);
+			print(temp);
 			return;
 		}
 		//if contact_id doesn't match, go to the next node
@@ -358,6 +359,7 @@ void contactList::updateContact(const string& phoneNumber, int contactField, con
 	cout << "Contact not found" << endl;
 }
 
+
 /**
  * Sorts the contact list in ascending order by last name
  */
@@ -377,7 +379,7 @@ void contactList::printSortedList() {
 		temp = head;
 		while (temp != nullptr) {
 			if (temp->getLastName() == lastNameVector[i]) {
-				printContact(temp);
+				print(temp);
 			}
 			temp = temp->getNext();
 		}
@@ -414,7 +416,7 @@ void contactList::printList() {
  * Prints out a specific contact info based on the contact id
  * @param phoneNumber
  */
-void contactList::printContact(contactNode *contact) {
+void contactList::print(contactNode *contact) {
 	//if it's not empty and has matched the contact id, print out the contact info
 	cout << "First Name: " << contact->getFirstName() << endl;
 	cout << "Last Name: " << contact->getLastName() << endl;
