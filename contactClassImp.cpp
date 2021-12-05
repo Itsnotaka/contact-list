@@ -18,7 +18,8 @@ using namespace std;
 * @version 1.0
  *
 * We are assuming that the email address is unique, so we used it as a key
-*
+* this will be a pointer to the next contact in the list
+ *
 * @param firstName The name of the contact
 * @param lastName The last name of the contact
 * @param phoneNumber The phone number of the contact
@@ -30,33 +31,29 @@ using namespace std;
 * @object createdAt shows the local date and time when the contact was created.
 * @object the pointer to the next contact in the list.
 */
-contactNode::contactNode(string firstName, string lastName, const string& phoneNumber){
-	contact_id = setId(phoneNumber);
-	first_name = firstName;
-	last_name = lastName;
-	phone_number = phoneNumber;
-	// convert time to string form
-	// current date/time based on current system
+contactNode::contactNode(string firstName, string lastName, const string &phoneNumber) {
+	this->contact_id = setId(phoneNumber);
+	this->first_name = firstName;
+	this->last_name = lastName;
+	this->phone_number = phoneNumber;
 	time_t created = time(nullptr);
-	createdAt = ctime(&created);
-
-	next = nullptr;
+	this->createdAt = ctime(&created);
+	this->next = nullptr;
 }
+
+
 
 /**
  * Preset contact class with default values
  */
 contactNode::contactNode() {
-	contact_id = 0;
-	first_name = "John";
-	last_name = "Doe";
-	phone_number = "999-999-9999";
-	// convert time to string form
-	// current date/time based on current system
+	this->contact_id = setId("999-999-9999");
+	this->first_name = "John";
+	this->last_name = "Doe";
+	this->phone_number = "999-999-9999";
 	time_t created = time(nullptr);
-	createdAt = ctime(&created);
-
-	next = nullptr;
+	this->createdAt = ctime(&created);
+	this->next = nullptr;
 }
 
 /**
@@ -199,24 +196,22 @@ contactList::~contactList() {
  * if it is	not empty, add the contact to the tail,
  * it then will add 1 to the size of the list.
  */
-void contactList::addContact(contactNode newContact) {
-	//create a temporary node
-	//Could change to auto temp = new contactNode(...);
-	contactNode *temp = new contactNode(newContact.getFirstName(), newContact.getLastName(), newContact.getPhoneNumber());
-	//reduce time by checking if the contact is already in the list
-	if (isContactInList(temp->getPhoneNumber())) {
+void contactList::addContact(contactNode contact) {
+	//check if the number is added before
+	if(isContactInList(contact.getPhoneNumber())){
 		cout << "Contact already exists" << endl;
 		return;
 	}
+	//create a new node for the list
+	auto *newContact = new contactNode(contact);
 	//check if the list is empty
 	if (head == nullptr) {
-		head = temp;
-		tail = temp;
+		head = newContact;
+		tail = newContact;
 	} else {
-		tail->setNext(temp);
-		tail = temp;
+		tail->setNext(newContact);
+		tail = newContact;
 	}
-	listSize++;
 }
 
 /**
@@ -377,15 +372,15 @@ void contactList::printSortedList() {
 	}
 	//sort the vector
 	sort(lastNameVector.begin(), lastNameVector.end());
-	//move the node by the order of the vector
-	temp = head;
-	while (temp != nullptr) {
-		//if the last name of the node matches the last name of the vector, print the contact
-		if (temp->getLastName() == lastNameVector[0]) {
-			printContact(temp);
-			lastNameVector.erase(lastNameVector.begin());
+	//print sorted list by last name
+	for (int i = 0; i < lastNameVector.size(); i++) {
+		temp = head;
+		while (temp != nullptr) {
+			if (temp->getLastName() == lastNameVector[i]) {
+				printContact(temp);
+			}
+			temp = temp->getNext();
 		}
-		temp = temp->getNext();
 	}
 }
 
@@ -497,3 +492,5 @@ string contactList::getPhoneNumber(const string& phoneNumber) {
 		return "Error: Contact not found";
 	}
 }
+
+

@@ -72,7 +72,7 @@ public:
 	string getPhoneNumber(const string &phoneNumber);
 	string getLastName(const string &phoneNumber);
 
-	void addContact(contactNode newContact);
+	void addContact(contactNode contact);
     void removeContact(const string& phoneNumber);
     void printList();
 	void printSortedList();
