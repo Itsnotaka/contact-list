@@ -76,7 +76,7 @@ public:
     void removeContact(const string& phoneNumber);
 	void print(contactNode *contact);
     void printList();
-	void printSortedList();
+	void sortList();
 	void searchForContact(const string& phoneNumber);
 	void searchForContactByName(const string &searchName);
 	void updateContact(const string& phoneNumber, int contactField, const string& updatedValue);

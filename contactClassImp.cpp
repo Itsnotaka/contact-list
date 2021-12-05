@@ -204,13 +204,15 @@ void contactList::addContact(contactNode contact) {
 		cout << "Contact already in the list" << endl;
 		return;
 	}
+	//initialize the new contact
+	auto *newContact = new contactNode(contact.getFirstName(), contact.getLastName(), contact.getPhoneNumber());
 	//check if the list is empty
 	if (head == nullptr) {
-		head = new contactNode(contact);
-		tail = head;
+		head = newContact;
+		tail = newContact;
 	} else {
-		tail->setNext(new contactNode(contact));
-		tail = tail->getNext();
+		tail->setNext(newContact);
+		tail = newContact;
 	}
 	listSize++;
 }
@@ -366,7 +368,11 @@ void contactList::updateContact(const string& phoneNumber, int contactField, con
 /**
  * Sorts the contact list in ascending order by last name
  */
-void contactList::printSortedList() {
+void contactList::sortList() {
+	if(listSize == 0){
+		cout << "List is empty" << endl;
+		return;
+	}
 	//initialize a vector for the last name of the contact
 	vector<string> lastNameVector;
 	//Add every last name in the node to the vector
@@ -377,15 +383,23 @@ void contactList::printSortedList() {
 	}
 	//sort the vector
 	sort(lastNameVector.begin(), lastNameVector.end());
-	//print sorted list by last name
+	//reassign the contact node by the sorted vector
+	//create a temp node
+	//match the last name in the vector with the last name in the node
+	//move the match vector to the head
+	//then move the head to the next node
+	temp = head;
 	for (int i = 0; i < lastNameVector.size(); i++) {
-		temp = head;
-		while (temp != nullptr) {
-			if (temp->getLastName() == lastNameVector[i]) {
-				print(temp);
-			}
+		while (temp->getLastName() != lastNameVector[i]) {
 			temp = temp->getNext();
 		}
+		if (i == 0) {
+			head = temp;
+		} else {
+			temp->setNext(head);
+			head = temp;
+		}
+		temp = temp->getNext();
 	}
 }
 

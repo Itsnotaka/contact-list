@@ -45,8 +45,12 @@ void promptMenu() {
 				cout << "> ";
 				cin >> phoneNumber;
 				contactNode newContact(firstName, lastName, phoneNumber);
-				newList.addContact(newContact);
-				cout << "Contact added successfully" << endl;
+				try {
+					newList.addContact(newContact);
+					cout << "Contact added successfully" << endl;
+				} catch (string error) {
+					cout << error << endl;
+				}
 			} else if (menuChoice == 2) {
 				cout << "You have chosen to remove a contact\nPlease enter the first name of the contact" << endl;
 				cout << "Please enter the phone number of the contact that you want to remove" << endl;
