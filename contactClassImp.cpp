@@ -281,6 +281,9 @@ bool contactList::isContactInList(const string& phoneNumber) {
  * @param phoneNumber
  */
 void contactList::searchForContact(const string& phoneNumber) {
+	if(!isContactInList(phoneNumber)){
+		cout << "Contact does not exists" << endl;
+	};
 	//create a temporary node
 	contactNode *temp = head;
 	//check if the list is empty
