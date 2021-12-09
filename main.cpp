@@ -7,20 +7,14 @@
 
 using namespace std;
 
-/**
- * For project 4 you are asked to create and maintain contact information (name and phone number). Your program must include the following functionality:
- * 1) add a new contact
- * 2) remove a contact
- * 3) update contact info
- * 4) display contacts in ascending order by last name
- * 5) find the contact info for a particular person
- */
+//initialize the contact list class globally
+contactList newList;
 
 //input a character will mostly crash the program
 //TODO find a way to fix this
 void promptMenu() {
 	char confirm;
-	contactList newList;
+
 	string firstName, lastName, phoneNumber, error;
 	int menuChoice, choice;
 	bool loop;
@@ -52,26 +46,28 @@ void promptMenu() {
 					cout << error << endl;
 				}
 			} else if (menuChoice == 2) {
-				cout << "You have chosen to remove a contact\nPlease enter the first name of the contact" << endl;
+				cout << "You have chosen to remove a contact" << endl;
 				cout << "Please enter the phone number of the contact that you want to remove" << endl;
 				cout << "> ";
 				cin >> phoneNumber;
 				try {
 					newList.removeContact(phoneNumber);
-					cout << "Contact removed successfully" << endl;
 				} catch (string error) {
 					cout << "Internal error removing contact" << error << endl;
 				}
 			} else if (menuChoice == 3) {
-				cout
-						<< "You have chosen to update a contact\nPlease enter the phone number of the contact you would like to update."
+				cout << "You have chosen to update a contact\nPlease enter the phone number of the contact you would like to update."
 						<< endl;
+				cout << "> ";
 				cin >> phoneNumber;
 				if (!newList.isContactInList(phoneNumber)) {
 					cout << "Contact not found" << endl;
 				} else {
-					cout << "Which of the following would you like to update contact for?";
-					cout << "1) First name\n2) Last name\n3) Phone number";
+					//if found, print the contact
+					newList.searchForContact(phoneNumber);
+					cout << "Which of the following would you like to update contact for?" << endl;
+					cout << "1) First name\n2) Last name\n3) Phone number" << endl;
+					cout << "==================================================" << endl;
 					cout << "> ";
 				};
 				cin >> choice;
@@ -84,30 +80,66 @@ void promptMenu() {
 					if (choice == 1) {
 						string oldValue = newList.getFirstName(phoneNumber);
 						cout << "What would you like to change the first name to?" << endl;
+						cout << "> ";
 						cin >> firstName;
-						newList.updateContact(phoneNumber, choice, firstName);
+						cout << "Are you sure you want to change the first name from " << oldValue << " to "
+							 << firstName << "? (y/n)" << endl;
+						cout << "> ";
+						cin >> confirm;
+						if (confirm == 'y') {
+							newList.updateContact(phoneNumber, choice, firstName);
+						} else {
+							cout << "First name not changed" << endl;
+						}
 					} else if (choice == 2) {
 						string oldValue = newList.getLastName(phoneNumber);
 						cout << "What would you like to change the last name to?" << endl;
+						cout << "> ";
 						cin >> lastName;
-						newList.updateContact(phoneNumber, choice, lastName);
+						cout << "Are you sure you want to change the last name from " << oldValue << " to "
+							 << lastName << "? (y/n)" << endl;
+						cout << "> ";
+						cin >> confirm;
+						if (confirm == 'y') {
+							newList.updateContact(phoneNumber, choice, lastName);
+						} else {
+							cout << "Last name not changed" << endl;
+						}
 					} else if (choice == 3) {
 						string oldValue = newList.getPhoneNumber(phoneNumber);
 						cout << "What would you like to change the phone number to?" << endl;
+						cout << "> ";
 						cin >> phoneNumber;
-						newList.updateContact(phoneNumber, choice, phoneNumber);
+						cout << "Are you sure you want to change the phone number from " << oldValue << " to "
+							 << phoneNumber << "? (y/n)" << endl;
+						cout << "> ";
+						cin >> confirm;
+						if (confirm == 'y') {
+							firstName = newList.getFirstName(phoneNumber);
+							lastName = newList.getLastName(phoneNumber);
+							//Update contact might not work for this
+							//newList.updateContact(phoneNumber, choice, phoneNumber);
+							//remove the contact and add it again
+							newList.removeContact(phoneNumber);
+							contactNode newContact(firstName, lastName, phoneNumber);
+							newList.addContact(newContact);
+						} else {
+							cout << "Phone number not changed" << endl;
+						}
 					}
 				} catch (string error) {
 					cout << "Internal error updating contact" << error << endl;
 				}
 			} else if (menuChoice == 4) {
 				try {
-					newList.printSortedList();
+					newList.sortList();
+					newList.printList();
 				} catch (string error) {
 					cout << "Internal error displaying contacts" << error << endl;
 				}
 			} else if (menuChoice == 5) {
 				cout << "Please enter the phone number of the contact" << endl;
+				cout << "> ";
 				cin >> phoneNumber;
 				try {
 					newList.searchForContact(phoneNumber);
@@ -135,11 +167,11 @@ void promptMenu() {
 }
 
 
-
 /**
  * Main function
  * @author Min CHun Fu
  * @version 1.0
+ * @github
  */
 int main() {
 
@@ -152,3 +184,22 @@ int main() {
 	promptMenu();
 	return 0;
 }
+
+//DOCS
+/*
+ * A discussion of the most common operation performed on the contacts,
+ * the efficiency of your solution, and the biggest challenge you overcame in completing this assignment.
+ *
+ * The most common operation performed on the contacts is to search for a contact by phone number.
+ * Every time you search for a contact, you must search through every contact in the list.
+ * This is inefficient because you must search through every contact in the list.
+ * The time complexity of Linear Search in the best case is O(1). In the worst case, the time complexity is O(n).
+ * However, we could possibly improve the efficiency of the program by using a binary search tree.
+ * But I am more used to using a linked list, so I will not implement a binary search tree.
+ *
+ * The hardest part is to keep on thinking and adding the structure of this program.
+ * Should we make a while loop or do while or If statement?
+ * Will silly user input cause the program to crash?
+ * Will the program crash if the user enters a number that is not in the menu?
+ * The process of editing and adding functions is a bit tedious.
+ */

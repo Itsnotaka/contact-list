@@ -58,7 +58,7 @@ contactNode::contactNode() {
 }
 
 /**
- * Gets the contact id
+ * @brief Gets the contact id
  * @return the contact_id of the contact
  */
 int contactNode::get_id() const {
@@ -66,7 +66,7 @@ int contactNode::get_id() const {
 }
 
 /**
- * Gets the first name of the contact
+ * @brief Gets the first name of the contact
  * @return the first name of the contact
  */
 string contactNode::getFirstName() {
@@ -74,7 +74,7 @@ string contactNode::getFirstName() {
 	}
 
 /**
- * Gets the last name of the contact
+ * @brief Gets the last name of the contact
  * @return the last name of the contact
  */
 string contactNode::getLastName() {
@@ -82,7 +82,7 @@ string contactNode::getLastName() {
 }
 
 /**
- * Gets the phone number of the contact
+ * @brief Gets the phone number of the contact
  * @return the phone number of the contact
  */
 string contactNode::getPhoneNumber() {
@@ -90,7 +90,7 @@ string contactNode::getPhoneNumber() {
 }
 
 /**
- * Generates a random id for the contact
+ * @brief Generates a random id for the contact
  *
  *  @version 1.0 -
  *  I made it that it randomly generates from  1 to 10000;
@@ -113,7 +113,7 @@ int contactNode::setId(const string& phoneNumber) {
 }
 
 /**
- * Sets the first name of the contact
+ * @brief Sets the first name of the contact
  * @param firstName
  * @return updated firstName
  */
@@ -122,7 +122,7 @@ void contactNode::setFirstName(string firstName) {
 }
 
 /**
- * Sets the last name of the contact
+ * @briefSets the last name of the contact
  * @param lastName
  * @return updated lastName
  */
@@ -131,7 +131,7 @@ void contactNode::setLastName(string lastName) {
 }
 
 /**
- * Sets the phone number of the contact
+ * @brief Sets the phone number of the contact
  * @param phoneNumber
  * @return updated phoneNumber
  */
@@ -140,7 +140,7 @@ void contactNode::setPhoneNumber(string phoneNumber) {
 }
 
 /**
- * Delete the contact
+ * @brief Delete the contact
  */
 contactNode::~contactNode() {
 	delete next;
@@ -164,7 +164,7 @@ contactNode *contactNode::setNext(contactNode *nextNode) {
 
 
 /**
- * Creates a new empty contact list
+ * @brief Creates a new empty contact list
  */
 contactList::contactList() {
 	head = nullptr;
@@ -174,7 +174,7 @@ contactList::contactList() {
 
 
 /**
- * Deletes the contact list
+ * @brief Deletes the contact list
  */
 contactList::~contactList() {
 	//delete all nodes
@@ -188,7 +188,7 @@ contactList::~contactList() {
 
 
 /**
- * Adds a new contact to the list
+ * @brief Adds a new contact to the list
  * @param newContact
  * contact should always have value
  *
@@ -218,7 +218,7 @@ void contactList::addContact(contactNode contact) {
 }
 
 /**
- * Removes a contact from the list
+ * @brief Removes a contact from the list
  * @param phoneNumber
  */
 void contactList::removeContact(const string& phoneNumber) {
@@ -227,7 +227,7 @@ void contactList::removeContact(const string& phoneNumber) {
 	contactNode *prev = nullptr;
 	//reduce time by checking if the contact is already in the list
 	// If yes, then proceed to remove the contact
-	if (!isContactInList(temp->getPhoneNumber())) {
+	if (!isContactInList(phoneNumber)) {
 		cout << "Contact does not exists" << endl;
 		return;
 	}
@@ -248,6 +248,7 @@ void contactList::removeContact(const string& phoneNumber) {
 				//if it's not the head or tail, set the previous node to the next node
 				prev->setNext(temp->getNext());
 			}
+			cout << "Contact removed successfully" << endl;
 			//delete the node and minus 1 from the size
 			delete temp;
 			listSize--;
@@ -262,7 +263,7 @@ void contactList::removeContact(const string& phoneNumber) {
 }
 
 /**
- * A crucial function that checks if the contact is in the list.
+ * @brief A crucial function that checks if the contact is in the list.
  * Used in addContact function and removeContact function
  * @param phoneNumber
  * @return true if the contact is in the list, false otherwise
@@ -279,7 +280,7 @@ bool contactList::isContactInList(const string& phoneNumber) {
 }
 
 /**
- * Similar function to isContactInList that checks if the contact is in the list.
+ * @brief Similar function to isContactInList that checks if the contact is in the list.
  * @param phoneNumber
  */
 void contactList::searchForContact(const string& phoneNumber) {
@@ -303,7 +304,7 @@ void contactList::searchForContact(const string& phoneNumber) {
 }
 
 /**
- * Similar function to searchForContact that checks if the contact is in the list by using entered name.
+ * @brief Similar function to searchForContact that checks if the contact is in the list by using entered name.
  * This will only return the first contact that matches the name.
  * @param searchName
  */
@@ -329,7 +330,7 @@ void contactList::searchForContactByName(const string &searchName) {
 }
 
 /**
- * Use the phone number to find the contact and replace the value in the contactField with updated value
+ * @brief Use the phone number to find the contact and replace the value in the contactField with updated value
  * @param phoneNumber phone number of the contact
  * @param contactField the field that needs to be updated
  * @param updatedValue the new value of the field
@@ -361,16 +362,16 @@ void contactList::updateContact(const string& phoneNumber, int contactField, con
 		//if contact_id doesn't match, go to the next node
 		temp = temp->getNext();
 	}
+	//if contact is not found, print error message
 	cout << "Contact not found" << endl;
 }
 
 
 /**
- * Sorts the contact list in ascending order by last name
+ * @brief Sorts the contact list in ascending order by last name
  */
 void contactList::sortList() {
 	if(listSize == 0){
-		cout << "List is empty" << endl;
 		return;
 	}
 	//initialize a vector for the last name of the contact
@@ -404,7 +405,7 @@ void contactList::sortList() {
 }
 
 /**
- * Prints out the whole list containing every contact info
+ * @brief Prints out the whole list containing every contact info
  */
 void contactList::printList() {
 	//create a temporary node
@@ -430,7 +431,7 @@ void contactList::printList() {
 }
 
 /**
- * Prints out a specific contact info based on the contact id
+ * @brief Prints out a specific contact info based on the contact id
  * @param phoneNumber
  */
 void contactList::print(contactNode *contact) {
@@ -449,7 +450,7 @@ int contactList::getListSize() const {
 }
 
 /**
- * Get the first name of the contact from the list by the phone number
+ * @brief Get the first name of the contact from the list by the phone number
  * @param phoneNumber
  * @return
  */
@@ -471,7 +472,7 @@ string contactList::getFirstName(const string& phoneNumber) {
 }
 
 /**
- * Get the last name of the contact from the list by the phone number
+ * @brief Get the last name of the contact from the list by the phone number
  * @param phoneNumber
  * @return
  */
@@ -492,7 +493,7 @@ string contactList::getLastName(const string& phoneNumber) {
 }
 
 /**
- * Return the phone number for the contact
+ * @brief Return the phone number for the contact
  * @param phoneNumber
  * @return
  */
